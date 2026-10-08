@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Yorah Academy Registration</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 25px 18px 40px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    width: 55px;
+    height: 55px;
+    background: #1769e0;
+    color: white;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.header h1 {
+    margin: 12px 0 5px;
+    font-size: 24px;
+}
+
+.header p {
+    margin: 0;
+    color: #667085;
+}
+
+.progress {
+    height: 7px;
+    background: #dfe4ec;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 16.6%;
+    background: #1769e0;
+    transition: 0.3s;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.step {
+    color: #1769e0;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+h2 {
+    margin: 8px 0;
+    font-size: 25px;
+}
+
+.description {
+    color: #667085;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d9dee7;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1769e0;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #1769e0;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    opacity: 0.92;
+}
+
+.back {
+    background: transparent;
+    color: #667085;
+    text-align: left;
+    padding: 0;
+    margin: 0 0 15px;
+}
+
+.package {
+    border: 1px solid #d9dee7;
+    background: white;
+    color: #172033;
+    text-align: left;
+    padding: 17px;
+    margin-bottom: 10px;
+}
+
+.package strong {
+    display: block;
+    font-size: 17px;
+}
+
+.package span {
+    display: block;
+    color: #667085;
+    margin-top: 5px;
+}
+
+.price {
+    float: right;
+    color: #1769e0;
+    font-weight: bold;
+}
+
+.university-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.summary {
+    border: 1px solid #d9dee7;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+    border-bottom: 1px solid #d9dee7;
+    gap: 15px;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.row span {
+    color: #667085;
+}
+
+.payment {
+    background: #eef5ff;
+    padding: 18px;
+    border-radius: 14px;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.upload {
+    border: 2px dashed #d9dee7;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.error {
+    color: #d33;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.success {
+    text-align: center;
+    padding: 20px 5px;
+}
+
+.success-icon {
+    font-size: 50px;
+}
+
+.small {
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">Y</div>
+        <h1>Yorah Academy</h1>
+        <p>Student Registration</p>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="card" id="app"></div>
+
+</div>
+
+<script>
+
+const packages = {
+    natural: {
+        name: "🌿 Natural",
+        price: 500
+    },
+
+    social: {
+        name: "👥 Social",
+        price: 450
+    },
+
+    aastu: {
+        name: "🎓 AASTU / ASTU",
+        price: 500
+    }
+};
+
+let state = {
+    step: 1,
+    name: "",
+    package: "",
+    university: ""
+};
+
+const app = document.getElementById("app");
+const progressBar = document.getElementById("progressBar");
+
+function updateProgress() {
+
+    let percentage = (state.step / 6) * 100;
+
+    progressBar.style.width = percentage + "%";
+}
+
+function render() {
+
+    updateProgress();
+
+    if (state.step === 1) {
+
+        app.innerHTML = `
+
+        <div class="step">Step 1 of 6</div>
+
+        <h2>Enter your full name</h2>
+
+        <p class="description">
+        Please enter your full name to begin your registration.
+        </p>
+
+        <label>Full name</label>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter your full name"
+            value="${state.name}"
+        >
+
+        <div id="error"></div>
+
+        <button onclick="saveName()">
+            Continue
+        </button>
+
+        `;
+
+        return;
+    }
+
+
+    if (state.step === 2) {
+
+        app.innerHTML = `
+
+        <button class="back" onclick="goBack()">
+            ← Back
+        </button>
+
+        <div class="step">Step 2 of 6</div>
+
+        <h2>Choose your package</h2>
+
+        <p class="description">
+        Select the package you want to register for.
+        </p>
+
+        <button class="package" onclick="choosePackage('natural')">
+
+            <span class="price">500 ETB</span>
+
+            <strong>🌿 Natural</strong>
+
+            <span>
+            Full package access
+            </span>
+
+        </button>
+
+
+        <button class="package" onclick="choosePackage('social')">
+
+            <span class="price">450 ETB</span>
+
+            <strong>👥 Social</strong>
+
+            <span>
+            Full package access
+            </span>
+
+        </button>
+
+
+        <button class="package" onclick="choosePackage('aastu')">
+
+            <span class="price">500 ETB</span>
+
+            <strong>🎓 AASTU / ASTU</strong>
+
+            <span>
+            Full package access
+            </span>
+
+        </button>
+
+        `;
+
+        return;
+    }
+
+
+    if (state.step === 3) {
+
+        if (state.package === "aastu") {
+
+            app.innerHTML = `
+
+            <button class="back" onclick="goBack()">
+                ← Back
+            </button>
+
+            <div class="step">Step 3 of 6</div>
+
+            <h2>Choose your university</h2>
+
+            <p class="description">
+            Select your university.
+            </p>
+
+            <div class="university-buttons">
+
+                <button onclick="chooseUniversity('AASTU')">
+                    AASTU
+                </button>
+
+                <button onclick="chooseUniversity('ASTU')">
+                    ASTU
+                </button>
+
+            </div>
+
+            `;
+
+        } else {
+
+            app.innerHTML = `
+
+            <button class="back" onclick="goBack()">
+                ← Back
+            </button>
+
+            <div class="step">Step 3 of 6</div>
+
+            <h2>Your university</h2>
+
+            <p class="description">
+            Enter the university you currently attend.
+            </p>
+
+            <label>University name</label>
+
+            <input
+                type="text"
+                id="university"
+                placeholder="Example: Addis Ababa University"
+                value="${state.university}"
+            >
+
+            <div id="error"></div>
+
+            <button onclick="saveUniversity()">
+                Continue
+            </button>
+
+            `;
+
+        }
+
+        return;
+    }
+
+
+    if (state.step === 4) {
+
+        app.innerHTML = `
+
+        <button class="back" onclick="goBack()">
+            ← Back
+        </button>
+
+        <div class="step">Step 4 of 6</div>
+
+        <h2>Review your registration</h2>
+
+        <p class="description">
+        Please make sure your information is correct.
+        </p>
+
+        <div class="summary">
+
+            <div class="row">
+                <span>Name</span>
+                <strong>${state.name}</strong>
+            </div>
+
+            <div class="row">
+                <span>Package</span>
+                <strong>${packages[state.package].name}</strong>
+            </div>
+
+            <div class="row">
+                <span>University</span>
+                <strong>${state.university}</strong>
+            </div>
+
+            <div class="row">
+                <span>Amount</span>
+                <strong>${packages[state.package].price} ETB</strong>
+            </div>
+
+        </div>
+
+        <button onclick="nextStep()">
+            Continue to Payment
+        </button>
+
+        `;
+
+        return;
+    }
+
+
+    if (state.step === 5) {
+
+        app.innerHTML = `
+
+        <button class="back" onclick="goBack()">
+            ← Back
+        </button>
+
+        <div class="step">Step 5 of 6</div>
+
+        <h2>Make your payment</h2>
+
+        <p class="description">
+        Pay ${packages[state.package].price} ETB and upload your payment screenshot.
+        </p>
+
+
+        <div class="payment">
+
+            <strong>Telebirr</strong><br>
+
+            Yosef Tessema<br>
+
+            0936163418
+
+            <br><br>
+
+            <strong>CBE</strong><br>
+
+            Yosef Tessema Wagari<br>
+
+            1000343105049
+
+        </div>
+
+
+        <div class="upload">
+
+            <label>
+                Payment screenshot
+            </label>
+
+            <input
+                type="file"
+                id="paymentScreenshot"
+                accept="image/*"
+            >
+
+        </div>
+
+        <div id="error"></div>
+
+        <button onclick="submitRegistration()">
+            Submit Registration
+        </button>
+
+        <p class="small">
+        Your payment will be reviewed by the Yorah Academy admin team.
+        </p>
+
+        `;
+
+        return;
+    }
+
+
+    if (state.step === 6) {
+
+        app.innerHTML = `
+
+        <div class="success">
+
+            <div class="success-icon">
+                ⏳
+            </div>
+
+            <div class="step">
+                Registration Submitted
+            </div>
+
+            <h2>
+                Payment Under Review
+            </h2>
+
+            <p class="description">
+                Your registration and payment screenshot have been submitted.
+            </p>
+
+            <p class="small">
+                You will receive your private course channel access after the admin approves your payment.
+            </p>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+
+function saveName() {
+
+    const nameInput = document.getElementById("name");
+
+    const name = nameInput.value.trim();
+
+    if (!name) {
+
+        document.getElementById("error").innerHTML =
+        '<div class="error">Please enter your full name.</div>';
+
+        return;
+    }
+
+    state.name = name;
+
+    state.step = 2;
+
+    render();
+}
+
+
+function choosePackage(packageName) {
+
+    state.package = packageName;
+
+    state.step = 3;
+
+    render();
+}
+
+
+function saveUniversity() {
+
+    const universityInput =
+    document.getElementById("university");
+
+    const university =
+    universityInput.value.trim();
+
+    if (!university) {
+
+        document.getElementById("error").innerHTML =
+        '<div class="error">Please enter your university.</div>';
+
+        return;
+    }
+
+    state.university = university;
+
+    state.step = 4;
+
+    render();
+}
+
+
+function chooseUniversity(university) {
+
+    state.university = university;
+
+    state.step = 4;
+
+    render();
+}
+
+
+function nextStep() {
+
+    state.step++;
+
+    render();
+}
+
+
+function goBack() {
+
+    state.step--;
+
+    if (state.step < 1) {
+        state.step = 1;
+    }
+
+    render();
+}
+
+
+function submitRegistration() {
+
+    const file =
+    document.getElementById("paymentScreenshot").files[0];
+
+    if (!file) {
+
+        document.getElementById("error").innerHTML =
+        '<div class="error">Please upload your payment screenshot.</div>';
+
+        return;
+    }
+
+    /*
+       We will connect this part to your
+       Telegram bot/backend later.
+    */
+
+    state.step = 6;
+
+    render();
+}
+
+
+render();
+
+</script>
+
+</body>
+</html>
