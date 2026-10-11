@@ -247,28 +247,70 @@ function render() {
     </div>`;
 }
 
+
 async function submitRegistration() {
-  if (!window.Telegram || !window.Telegram.WebApp) {
-    showError("Please open registration from the Yorah Academy bot in Telegram.");
+  const webApp = window.Telegram?.WebApp;
+  const errorBox = document.getElementById("err");
+  const receipt = document.getElementById("receipt")?.files[0];
+
+  if (!webApp) {
+    errorBox.innerText = "Please open registration through the Yorah Academy bot.";
     return;
   }
 
   if (!state.name || !state.packageKey || !state.university) {
-    showError("Please complete all registration details.");
+    errorBox.innerText = "Please complete all registration details.";
     return;
   }
 
-  try {
-    const webApp = window.Telegram.WebApp;
+  if (!receipt) {
+    errorBox.innerText = "Please upload your payment screenshot.";
+    return;
+  }
 
-    webApp.sendData(JSON.stringify({
-      name: state.name,
-      packageKey: state.packageKey,
-      university: state.university
-    }));
+  const telegramUserId = webApp.initDataUnsafe?.user?.id;
+
+  if (!telegramUserId) {
+    errorBox.innerText = "Could not identify your Telegram account. Please reopen the bot.";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", state.name);
+  formData.append("packageKey", state.packageKey);
+  formData.append("university", state.university);
+  formData.append("telegramUserId", String(telegramUserId));
+  formData.append("receipt", receipt);
+
+  const button = document.getElementById("submit");
+  button.disabled = true;
+  button.innerText = "Submitting...";
+
+  try {
+    const response = await fetch(
+      "https://yorah-academy-backend.onrender.com/register",
+      {
+        method: "POST",
+        body: formData
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || "Registration failed.");
+    }
+
+    state.paymentFile = receipt;
+    state.step = 6;
+    render();
 
   } catch (error) {
-    showError("Could not send your registration. Please try again.");
+    errorBox.innerText =
+      error.message || "Could not submit your registration. Please try again.";
+
+    button.disabled = false;
+    button.innerText = "Submit registration";
   }
 }
 
