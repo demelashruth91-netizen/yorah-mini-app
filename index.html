@@ -4,34 +4,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <title>Yorah Academy Registration</title>
+
 <style>
 :root {
-  color-scheme: light dark;
-  --bg: light-dark(#f6f8fb,#0d1117);
-  --card: light-dark(#fff,#161b22);
-  --text: light-dark(#172033,#f1f5f9);
-  --muted: light-dark(#667085,#aab4c3);
-  --border: light-dark(#e4e8ef,#2b3440);
-  --accent: light-dark(#1769e0,#5b9cff);
-  --accent-soft: light-dark(#eaf2ff,#172a46);
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --text: #172033;
+  --muted: #667085;
+  --border: #e4e8ef;
+  --accent: #1769e0;
+  --soft: #eaf2ff;
   --danger: #c83c4a;
 }
 * { box-sizing: border-box; }
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  font-family: Inter, Segoe UI, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
 }
-#app { min-height: 100vh; background: var(--bg); padding: 20px 16px 32px; }
-.wrap { max-width: 620px; margin: 0 auto; }
+#app { min-height: 100vh; padding: 20px 16px 32px; }
+.wrap { max-width: 620px; margin: auto; }
 .brand { display: flex; align-items: center; gap: 12px; margin: 8px 0 22px; }
 .logo {
   width: 46px; height: 46px; border-radius: 14px;
-  background: var(--accent); color: #fff; display: grid;
-  place-items: center; font-weight: 800; font-size: 20px;
+  background: var(--accent); color: white;
+  display: grid; place-items: center; font-weight: 800; font-size: 20px;
 }
 .brand h1 { font-size: 20px; margin: 0; }
 .brand p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
@@ -43,59 +43,45 @@ html, body {
 .sub { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
 .field { margin: 18px 0; }
 .label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
-.input {
-  width: 100%; padding: 14px 15px; border: 1px solid var(--border);
-  border-radius: 12px; background: transparent; color: var(--text);
-  font-size: 16px; outline: none;
-}
-.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-.btn {
-  width: 100%; min-height: 46px; border: 0; border-radius: 12px;
-  background: var(--accent); color: #fff; font-size: 15px;
-  font-weight: 750; cursor: pointer;
-}
+.input { width: 100%; padding: 14px 15px; border: 1px solid var(--border); border-radius: 12px; background: white; color: var(--text); font-size: 16px; }
+.btn { width: 100%; min-height: 46px; border: 0; border-radius: 12px; background: var(--accent); color: white; font-size: 15px; font-weight: 750; cursor: pointer; }
 .btn:disabled { opacity: .65; cursor: wait; }
-.btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); margin-top: 10px; }
 .packages { display: grid; gap: 11px; }
-.package {
-  border: 1px solid var(--border); border-radius: 14px; padding: 15px;
-  text-align: left; background: transparent; color: var(--text); cursor: pointer;
-}
-.package:hover, .package.selected { border-color: var(--accent); background: var(--accent-soft); }
+.package { border: 1px solid var(--border); border-radius: 14px; padding: 15px; text-align: left; background: white; color: var(--text); cursor: pointer; }
 .package strong { display: block; font-size: 16px; }
 .package span { display: block; color: var(--muted); margin-top: 4px; font-size: 13px; }
-.price { float: right; color: var(--accent); font-weight: 800; }
+.price { float: right; color: var(--accent) !important; font-weight: 800; }
 .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.choice button {
-  padding: 16px; border: 1px solid var(--border);
-  background: transparent; color: var(--text); border-radius: 12px;
-  font-weight: 700; cursor: pointer;
-}
+.choice button { padding: 16px; border: 1px solid var(--border); background: white; color: var(--text); border-radius: 12px; font-weight: 700; cursor: pointer; }
 .summary { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 18px 0; }
 .row { display: flex; justify-content: space-between; gap: 15px; padding: 13px 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
 .row:last-child { border-bottom: 0; }
 .row span:first-child { color: var(--muted); }
-.payment { background: var(--accent-soft); border-radius: 14px; padding: 15px; margin: 18px 0; }
+.payment { background: var(--soft); border-radius: 14px; padding: 15px; margin: 18px 0; }
 .payment p { margin: 6px 0; font-size: 14px; }
-.upload { border: 1px dashed var(--border); padding: 18px; border-radius: 14px; text-align: center; margin: 15px 0; }
+.upload { border: 1px dashed var(--border); padding: 18px; border-radius: 14px; margin: 15px 0; }
 .upload input { max-width: 100%; }
-.status { text-align: center; padding: 24px 5px; }
-.check { font-size: 42px; margin-bottom: 8px; }
 .error { color: var(--danger); font-size: 13px; margin: 8px 0; }
 .back { background: none; border: 0; color: var(--muted); padding: 8px 0; cursor: pointer; margin-bottom: 8px; }
 .small { font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 15px; }
+.status { text-align: center; padding: 24px 5px; }
+.check { font-size: 42px; margin-bottom: 8px; }
 </style>
 </head>
+
 <body>
 <main id="app">
-<div class="wrap">
-  <div class="brand">
-    <div class="logo">Y</div>
-    <div><h1>Yorah Academy</h1><p>Student registration</p></div>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">Y</div>
+      <div>
+        <h1>Yorah Academy</h1>
+        <p>Student registration</p>
+      </div>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <section class="card" id="card"></section>
   </div>
-  <div class="progress"><div class="bar" id="bar"></div></div>
-  <section class="card" id="card"></section>
-</div>
 </main>
 
 <script>
@@ -112,40 +98,35 @@ const state = {
   name: "",
   packageKey: "",
   university: "",
-  paymentFile: null,
   submitting: false
 };
 
 const card = document.getElementById("card");
 const bar = document.getElementById("bar");
 
-function escapeHtml(s) {
-  return String(s || "").replace(/[&<>'"]/g, c => ({
+function escapeHtml(value) {
+  return String(value || "").replace(/[&<>'"]/g, char => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     "'": "&#39;",
     '"': "&quot;"
-  }[c]));
-}
-
-function progress() {
-  bar.style.width = (state.step / 6 * 100) + "%";
+  }[char]));
 }
 
 function showError(message) {
-  const err = document.getElementById("err");
-  if (err) err.innerHTML = '<div class="error">' + escapeHtml(message) + '</div>';
+  const box = document.getElementById("err");
+  if (box) box.innerHTML = '<div class="error">' + escapeHtml(message) + '</div>';
 }
 
 function render() {
-  progress();
+  bar.style.width = (state.step / 6 * 100) + "%";
 
   if (state.step === 1) {
     card.innerHTML = `
       <div class="eyebrow">Step 1 of 6</div>
       <h2 class="title">Let's get started</h2>
-      <p class="sub">Enter your full name to begin your Yorah Academy registration.</p>
+      <p class="sub">Enter your full name to begin registration.</p>
       <div class="field">
         <label class="label" for="name">Full name</label>
         <input class="input" id="name" placeholder="Enter your full name" value="${escapeHtml(state.name)}">
@@ -160,12 +141,12 @@ function render() {
       <button class="back" id="back">← Back</button>
       <div class="eyebrow">Step 2 of 6</div>
       <h2 class="title">Choose your package</h2>
-      <p class="sub">Select the package you want to register for.</p>
+      <p class="sub">Select the package you want.</p>
       <div class="packages">
-        ${Object.entries(packages).map(([key, p]) => `
-          <button class="package ${state.packageKey === key ? "selected" : ""}" data-p="${key}">
-            <span class="price">${p.price} ETB</span>
-            <strong>${p.name}</strong>
+        ${Object.entries(packages).map(([key, item]) => `
+          <button class="package" data-p="${key}">
+            <span class="price">${item.price} ETB</span>
+            <strong>${item.name}</strong>
             <span>Full package access</span>
           </button>`).join("")}
       </div>`;
@@ -178,7 +159,7 @@ function render() {
         <button class="back" id="back">← Back</button>
         <div class="eyebrow">Step 3 of 6</div>
         <h2 class="title">Choose your university</h2>
-        <p class="sub">Select the university for your AASTU / ASTU package.</p>
+        <p class="sub">Select your university.</p>
         <div class="choice">
           <button data-u="AASTU">AASTU</button>
           <button data-u="ASTU">ASTU</button>
@@ -204,7 +185,7 @@ function render() {
       <button class="back" id="back">← Back</button>
       <div class="eyebrow">Step 4 of 6</div>
       <h2 class="title">Review your registration</h2>
-      <p class="sub">Please make sure your information is correct.</p>
+      <p class="sub">Check that your information is correct.</p>
       <div class="summary">
         <div class="row"><span>Name</span><strong>${escapeHtml(state.name)}</strong></div>
         <div class="row"><span>Package</span><strong>${packages[state.packageKey].name}</strong></div>
@@ -220,60 +201,75 @@ function render() {
       <button class="back" id="back">← Back</button>
       <div class="eyebrow">Step 5 of 6</div>
       <h2 class="title">Make your payment</h2>
-      <p class="sub">Pay ${packages[state.packageKey].price} ETB, then upload your payment screenshot below.</p>
+      <p class="sub">Pay ${packages[state.packageKey].price} ETB, then upload your payment screenshot.</p>
       <div class="payment">
         <p><strong>Telebirr</strong><br>Yosef Tessema<br>0936163418</p>
         <p><strong>CBE</strong><br>Yosef Tessema Wagari<br>1000343105049</p>
       </div>
       <div class="upload">
-        <p class="small">After submitting your registration, return to the Yorah Academy bot chat and send your payment screenshot there. Your payment will be reviewed by our admin team.</p>
+        <label class="label" for="receipt">Payment screenshot</label>
         <input type="file" id="receipt" accept="image/*">
       </div>
       <div id="err"></div>
-      <button class="btn" id="submit" ${state.submitting ? "disabled" : ""}>
-        ${state.submitting ? "Submitting..." : "Submit registration"}
-      </button>
-      <p class="small">Your registration will be reviewed by the Yorah Academy admin team.</p>`;
+      <button class="btn" id="submit">Submit registration</button>
+      <p class="small">Your registration and screenshot will be sent for admin review.</p>`;
     return;
   }
 
   card.innerHTML = `
     <div class="status">
-      <div class="check">⏳</div>
-      <p class="sub">Your registration details have been sent. Please return to the Yorah Academy bot chat and send your payment screenshot there. Your course invitation link will be sent after admin approval.</p>
+      <div class="check">✅</div>
+      <div class="eyebrow">Registration submitted</div>
       <h2 class="title">Payment under review</h2>
-      <p class="sub">Your registration details and screenshot have been sent to the admin team for review. Course access is provided after approval.</p>
+      <p class="sub">Your registration was received. The admin team will review your payment and contact you through Telegram.</p>
       <button class="btn" id="done">Back to start</button>
     </div>`;
 }
 
-
 async function submitRegistration() {
   const webApp = window.Telegram?.WebApp;
-  const errorBox = document.getElementById("err");
-  const receipt = document.getElementById("receipt")?.files[0];
+  const receiptInput = document.getElementById("receipt");
+  const receipt = receiptInput?.files?.[0];
 
   if (!webApp) {
-    errorBox.innerText = "Please open registration through the Yorah Academy bot.";
+    showError("Please open registration using the button inside the Yorah Academy Telegram bot.");
     return;
   }
 
   if (!state.name || !state.packageKey || !state.university) {
-    errorBox.innerText = "Please complete all registration details.";
+    showError("Please complete all registration details.");
     return;
   }
 
   if (!receipt) {
-    errorBox.innerText = "Please upload your payment screenshot.";
+    showError("Please upload your payment screenshot.");
+    return;
+  }
+
+  if (!receipt.type.startsWith("image/")) {
+    showError("Please select an image file.");
+    return;
+  }
+
+  if (receipt.size > 10 * 1024 * 1024) {
+    showError("Please upload an image smaller than 10 MB.");
     return;
   }
 
   const telegramUserId = webApp.initDataUnsafe?.user?.id;
 
   if (!telegramUserId) {
-    errorBox.innerText = "Could not identify your Telegram account. Please reopen the bot.";
+    showError("Could not identify your Telegram account. Close the page and reopen it from your bot.");
     return;
   }
+
+  if (state.submitting) return;
+
+  state.submitting = true;
+
+  const button = document.getElementById("submit");
+  button.disabled = true;
+  button.textContent = "Submitting...";
 
   const formData = new FormData();
   formData.append("name", state.name);
@@ -282,35 +278,35 @@ async function submitRegistration() {
   formData.append("telegramUserId", String(telegramUserId));
   formData.append("receipt", receipt);
 
-  const button = document.getElementById("submit");
-  button.disabled = true;
-  button.innerText = "Submitting...";
-
   try {
-    const response = await fetch(
-      "https://yorah-academy-backend.onrender.com/register",
-      {
-        method: "POST",
-        body: formData
-      }
-    );
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: formData
+    });
 
-    const result = await response.json();
-
-    if (!response.ok || !result.ok) {
-      throw new Error(result.error || "Registration failed.");
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error("The server returned an unexpected response. Please try again.");
     }
 
-    state.paymentFile = receipt;
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || "Registration failed. Please try again.");
+    }
+
+    state.submitting = false;
     state.step = 6;
     render();
 
   } catch (error) {
-    errorBox.innerText =
-      error.message || "Could not submit your registration. Please try again.";
-
-    button.disabled = false;
-    button.innerText = "Submit registration";
+    state.submitting = false;
+    showError(error.message || "Could not submit your registration. Please try again.");
+    const currentButton = document.getElementById("submit");
+    if (currentButton) {
+      currentButton.disabled = false;
+      currentButton.textContent = "Submit registration";
+    }
   }
 }
 
@@ -321,23 +317,20 @@ card.addEventListener("click", async event => {
   if (button.id === "next") {
     if (state.step === 1) {
       state.name = document.getElementById("name").value.trim();
-
       if (!state.name) {
         showError("Please enter your full name.");
         return;
       }
-
       state.step = 2;
 
-    } else if (state.step === 3) {
+    } else if (state.step === 3 && state.packageKey !== "aastu") {
       state.university = document.getElementById("uni").value.trim();
-
       if (!state.university) {
         showError("Please enter your university.");
         return;
       }
-
       state.step = 4;
+
     } else {
       state.step++;
     }
@@ -374,15 +367,19 @@ card.addEventListener("click", async event => {
   }
 
   if (button.id === "done") {
+    if (state.submitting) return;
     state.step = 1;
     state.name = "";
     state.packageKey = "";
     state.university = "";
-    state.paymentFile = null;
-    state.submitting = false;
     render();
   }
 });
+
+if (window.Telegram?.WebApp) {
+  window.Telegram.WebApp.ready();
+  window.Telegram.WebApp.expand();
+}
 
 render();
 </script>
