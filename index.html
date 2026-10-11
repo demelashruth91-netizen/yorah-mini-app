@@ -248,64 +248,27 @@ function render() {
 }
 
 async function submitRegistration() {
-  const fileInput = document.getElementById("receipt");
-  const file = fileInput.files[0];
-
-  if (!file) {
-    showError("Please upload your payment screenshot.");
+  if (!window.Telegram || !window.Telegram.WebApp) {
+    showError("Please open registration from the Yorah Academy bot in Telegram.");
     return;
   }
 
-  if (!file.type.startsWith("image/")) {
-    showError("Please upload an image of your payment screenshot.");
+  if (!state.name || !state.packageKey || !state.university) {
+    showError("Please complete all registration details.");
     return;
   }
-
-  if (file.size > 10 * 1024 * 1024) {
-    showError("Your screenshot must be smaller than 10 MB.");
-    return;
-  }
-
-  state.paymentFile = file;
-  state.submitting = true;
-  render();
-
-  const formData = new FormData();
-  formData.append("name", state.name);
-  formData.append("packageKey", state.packageKey);
-  formData.append("university", state.university);
-  formData.append("receipt", state.paymentFile, state.paymentFile.name);
 
   try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      body: formData
-    });
+    const webApp = window.Telegram.WebApp;
 
-    let result;
-    try {
-      result = await response.json();
-    } catch {
-      throw new Error("The server returned an unexpected response. Please try again.");
-    }
-
-    if (!response.ok || !result.ok) {
-      throw new Error(result.error || "Submission failed. Please try again.");
-    }
-
-    state.submitting = false;
-    state.step = 6;
-    render();
+    webApp.sendData(JSON.stringify({
+      name: state.name,
+      packageKey: state.packageKey,
+      university: state.university
+    }));
 
   } catch (error) {
-    state.submitting = false;
-    render();
-
-    if (error instanceof TypeError) {
-      showError("Could not connect to the server. Please wait a minute and try again.");
-    } else {
-      showError(error.message || "Something went wrong. Please try again.");
-    }
+    showError("Could not send your registration. Please try again.");
   }
 }
 
