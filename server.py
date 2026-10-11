@@ -131,3 +131,39 @@ def register():
         "message": "Registration sent for review",
         "registrationId": registration_id,
     })
+
+
+@app.route("/review", methods=["POST"])
+def review_registration():
+    if not BOT_TOKEN:
+        return jsonify({"error": "Backend configuration is incomplete"}), 500
+
+    if request.headers.get("X-Bot-Token") != BOT_TOKEN:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+    registration_id = str(data.get("registration_id", ""))
+    action = data.get("action", "")
+
+    if action not in ("approve", "reject"):
+        return jsonify({"error": "Invalid action"}), 400
+
+    reg = registrations.get(registration_id)
+
+    if not reg:
+        return jsonify({"error": "Registration not found"}), 404
+
+    if reg["status"] != "under_review":
+        return jsonify({"error": "Already reviewed"}), 409
+
+    reg["status"] = "approved" if action == "approve" else "rejected"
+    course = COURSES[reg["package_key"]]
+
+    return jsonify({
+        "ok": True,
+        "status": reg["status"],
+        "user_id": reg["user_id"],
+        "package_name": course["name"],
+        "course_link": course["link"],
+        "support_url": "https://t.me/yorahsupport"
+    })
