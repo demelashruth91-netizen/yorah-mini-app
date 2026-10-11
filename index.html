@@ -1,723 +1,385 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Yorah Academy Registration</title>
-
 <style>
-* {
-    box-sizing: border-box;
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f6f8fb,#0d1117);
+  --card: light-dark(#fff,#161b22);
+  --text: light-dark(#172033,#f1f5f9);
+  --muted: light-dark(#667085,#aab4c3);
+  --border: light-dark(#e4e8ef,#2b3440);
+  --accent: light-dark(#1769e0,#5b9cff);
+  --accent-soft: light-dark(#eaf2ff,#172a46);
+  --danger: #c83c4a;
 }
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f7fb;
-    color: #172033;
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
-
-.container {
-    max-width: 600px;
-    margin: auto;
-    padding: 25px 18px 40px;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
+#app { min-height: 100vh; background: var(--bg); padding: 20px 16px 32px; }
+.wrap { max-width: 620px; margin: 0 auto; }
+.brand { display: flex; align-items: center; gap: 12px; margin: 8px 0 22px; }
 .logo {
-    width: 55px;
-    height: 55px;
-    background: #1769e0;
-    color: white;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    font-size: 25px;
-    font-weight: bold;
+  width: 46px; height: 46px; border-radius: 14px;
+  background: var(--accent); color: #fff; display: grid;
+  place-items: center; font-weight: 800; font-size: 20px;
 }
-
-.header h1 {
-    margin: 12px 0 5px;
-    font-size: 24px;
+.brand h1 { font-size: 20px; margin: 0; }
+.brand p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+.progress { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+.bar { height: 100%; background: var(--accent); width: 16.6%; transition: width .2s; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 22px; }
+.eyebrow { font-size: 12px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.title { font-size: 25px; line-height: 1.15; margin: 7px 0 8px; }
+.sub { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
+.field { margin: 18px 0; }
+.label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.input {
+  width: 100%; padding: 14px 15px; border: 1px solid var(--border);
+  border-radius: 12px; background: transparent; color: var(--text);
+  font-size: 16px; outline: none;
 }
-
-.header p {
-    margin: 0;
-    color: #667085;
+.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.btn {
+  width: 100%; min-height: 46px; border: 0; border-radius: 12px;
+  background: var(--accent); color: #fff; font-size: 15px;
+  font-weight: 750; cursor: pointer;
 }
-
-.progress {
-    height: 7px;
-    background: #dfe4ec;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 16.6%;
-    background: #1769e0;
-    transition: 0.3s;
-}
-
-.card {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-}
-
-.step {
-    color: #1769e0;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-h2 {
-    margin: 8px 0;
-    font-size: 25px;
-}
-
-.description {
-    color: #667085;
-    line-height: 1.5;
-    margin-bottom: 22px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-input {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #d9dee7;
-    border-radius: 12px;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-input:focus {
-    outline: none;
-    border-color: #1769e0;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    background: #1769e0;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    opacity: 0.92;
-}
-
-.back {
-    background: transparent;
-    color: #667085;
-    text-align: left;
-    padding: 0;
-    margin: 0 0 15px;
-}
-
+.btn:disabled { opacity: .65; cursor: wait; }
+.btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); margin-top: 10px; }
+.packages { display: grid; gap: 11px; }
 .package {
-    border: 1px solid #d9dee7;
-    background: white;
-    color: #172033;
-    text-align: left;
-    padding: 17px;
-    margin-bottom: 10px;
+  border: 1px solid var(--border); border-radius: 14px; padding: 15px;
+  text-align: left; background: transparent; color: var(--text); cursor: pointer;
 }
-
-.package strong {
-    display: block;
-    font-size: 17px;
+.package:hover, .package.selected { border-color: var(--accent); background: var(--accent-soft); }
+.package strong { display: block; font-size: 16px; }
+.package span { display: block; color: var(--muted); margin-top: 4px; font-size: 13px; }
+.price { float: right; color: var(--accent); font-weight: 800; }
+.choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.choice button {
+  padding: 16px; border: 1px solid var(--border);
+  background: transparent; color: var(--text); border-radius: 12px;
+  font-weight: 700; cursor: pointer;
 }
-
-.package span {
-    display: block;
-    color: #667085;
-    margin-top: 5px;
-}
-
-.price {
-    float: right;
-    color: #1769e0;
-    font-weight: bold;
-}
-
-.university-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.summary {
-    border: 1px solid #d9dee7;
-    border-radius: 12px;
-    overflow: hidden;
-    margin: 20px 0;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px;
-    border-bottom: 1px solid #d9dee7;
-    gap: 15px;
-}
-
-.row:last-child {
-    border-bottom: none;
-}
-
-.row span {
-    color: #667085;
-}
-
-.payment {
-    background: #eef5ff;
-    padding: 18px;
-    border-radius: 14px;
-    line-height: 1.6;
-    margin: 20px 0;
-}
-
-.upload {
-    border: 2px dashed #d9dee7;
-    border-radius: 14px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.error {
-    color: #d33;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.success {
-    text-align: center;
-    padding: 20px 5px;
-}
-
-.success-icon {
-    font-size: 50px;
-}
-
-.small {
-    color: #667085;
-    font-size: 13px;
-    line-height: 1.5;
-}
+.summary { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 18px 0; }
+.row { display: flex; justify-content: space-between; gap: 15px; padding: 13px 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
+.row:last-child { border-bottom: 0; }
+.row span:first-child { color: var(--muted); }
+.payment { background: var(--accent-soft); border-radius: 14px; padding: 15px; margin: 18px 0; }
+.payment p { margin: 6px 0; font-size: 14px; }
+.upload { border: 1px dashed var(--border); padding: 18px; border-radius: 14px; text-align: center; margin: 15px 0; }
+.upload input { max-width: 100%; }
+.status { text-align: center; padding: 24px 5px; }
+.check { font-size: 42px; margin-bottom: 8px; }
+.error { color: var(--danger); font-size: 13px; margin: 8px 0; }
+.back { background: none; border: 0; color: var(--muted); padding: 8px 0; cursor: pointer; margin-bottom: 8px; }
+.small { font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 15px; }
 </style>
 </head>
-
 <body>
-
-<div class="container">
-
-    <div class="header">
-        <div class="logo">Y</div>
-        <h1>Yorah Academy</h1>
-        <p>Student Registration</p>
-    </div>
-
-    <div class="progress">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div class="card" id="app"></div>
-
+<main id="app">
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">Y</div>
+    <div><h1>Yorah Academy</h1><p>Student registration</p></div>
+  </div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <section class="card" id="card"></section>
 </div>
+</main>
 
 <script>
+const API_URL = "https://yorah-academy-backend.onrender.com/register";
 
 const packages = {
-    natural: {
-        name: "🌿 Natural",
-        price: 500
-    },
-
-    social: {
-        name: "👥 Social",
-        price: 450
-    },
-
-    aastu: {
-        name: "🎓 AASTU / ASTU",
-        price: 500
-    }
+  natural: { name: "🌿 Natural", price: 500 },
+  social: { name: "👥 Social", price: 450 },
+  aastu: { name: "🎓 AASTU / ASTU", price: 500 }
 };
 
-let state = {
-    step: 1,
-    name: "",
-    package: "",
-    university: ""
+const state = {
+  step: 1,
+  name: "",
+  packageKey: "",
+  university: "",
+  paymentFile: null,
+  submitting: false
 };
 
-const app = document.getElementById("app");
-const progressBar = document.getElementById("progressBar");
+const card = document.getElementById("card");
+const bar = document.getElementById("bar");
 
-function updateProgress() {
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>'"]/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;"
+  }[c]));
+}
 
-    let percentage = (state.step / 6) * 100;
+function progress() {
+  bar.style.width = (state.step / 6 * 100) + "%";
+}
 
-    progressBar.style.width = percentage + "%";
+function showError(message) {
+  const err = document.getElementById("err");
+  if (err) err.innerHTML = '<div class="error">' + escapeHtml(message) + '</div>';
 }
 
 function render() {
-
-    updateProgress();
-
-    if (state.step === 1) {
-
-        app.innerHTML = `
-
-        <div class="step">Step 1 of 6</div>
-
-        <h2>Enter your full name</h2>
-
-        <p class="description">
-        Please enter your full name to begin your registration.
-        </p>
-
-        <label>Full name</label>
-
-        <input
-            type="text"
-            id="name"
-            placeholder="Enter your full name"
-            value="${state.name}"
-        >
-
-        <div id="error"></div>
-
-        <button onclick="saveName()">
-            Continue
-        </button>
-
-        `;
-
-        return;
-    }
-
-
-    if (state.step === 2) {
-
-        app.innerHTML = `
-
-        <button class="back" onclick="goBack()">
-            ← Back
-        </button>
-
-        <div class="step">Step 2 of 6</div>
-
-        <h2>Choose your package</h2>
-
-        <p class="description">
-        Select the package you want to register for.
-        </p>
-
-        <button class="package" onclick="choosePackage('natural')">
-
-            <span class="price">500 ETB</span>
-
-            <strong>🌿 Natural</strong>
-
-            <span>
-            Full package access
-            </span>
-
-        </button>
-
-
-        <button class="package" onclick="choosePackage('social')">
-
-            <span class="price">450 ETB</span>
-
-            <strong>👥 Social</strong>
-
-            <span>
-            Full package access
-            </span>
-
-        </button>
-
-
-        <button class="package" onclick="choosePackage('aastu')">
-
-            <span class="price">500 ETB</span>
-
-            <strong>🎓 AASTU / ASTU</strong>
-
-            <span>
-            Full package access
-            </span>
-
-        </button>
-
-        `;
-
-        return;
-    }
-
-
-    if (state.step === 3) {
-
-        if (state.package === "aastu") {
-
-            app.innerHTML = `
-
-            <button class="back" onclick="goBack()">
-                ← Back
-            </button>
-
-            <div class="step">Step 3 of 6</div>
-
-            <h2>Choose your university</h2>
-
-            <p class="description">
-            Select your university.
-            </p>
-
-            <div class="university-buttons">
-
-                <button onclick="chooseUniversity('AASTU')">
-                    AASTU
-                </button>
-
-                <button onclick="chooseUniversity('ASTU')">
-                    ASTU
-                </button>
-
-            </div>
-
-            `;
-
-        } else {
-
-            app.innerHTML = `
-
-            <button class="back" onclick="goBack()">
-                ← Back
-            </button>
-
-            <div class="step">Step 3 of 6</div>
-
-            <h2>Your university</h2>
-
-            <p class="description">
-            Enter the university you currently attend.
-            </p>
-
-            <label>University name</label>
-
-            <input
-                type="text"
-                id="university"
-                placeholder="Example: Addis Ababa University"
-                value="${state.university}"
-            >
-
-            <div id="error"></div>
-
-            <button onclick="saveUniversity()">
-                Continue
-            </button>
-
-            `;
-
-        }
-
-        return;
-    }
-
-
-    if (state.step === 4) {
-
-        app.innerHTML = `
-
-        <button class="back" onclick="goBack()">
-            ← Back
-        </button>
-
-        <div class="step">Step 4 of 6</div>
-
-        <h2>Review your registration</h2>
-
-        <p class="description">
-        Please make sure your information is correct.
-        </p>
-
-        <div class="summary">
-
-            <div class="row">
-                <span>Name</span>
-                <strong>${state.name}</strong>
-            </div>
-
-            <div class="row">
-                <span>Package</span>
-                <strong>${packages[state.package].name}</strong>
-            </div>
-
-            <div class="row">
-                <span>University</span>
-                <strong>${state.university}</strong>
-            </div>
-
-            <div class="row">
-                <span>Amount</span>
-                <strong>${packages[state.package].price} ETB</strong>
-            </div>
-
+  progress();
+
+  if (state.step === 1) {
+    card.innerHTML = `
+      <div class="eyebrow">Step 1 of 6</div>
+      <h2 class="title">Let's get started</h2>
+      <p class="sub">Enter your full name to begin your Yorah Academy registration.</p>
+      <div class="field">
+        <label class="label" for="name">Full name</label>
+        <input class="input" id="name" placeholder="Enter your full name" value="${escapeHtml(state.name)}">
+      </div>
+      <div id="err"></div>
+      <button class="btn" id="next">Continue</button>`;
+    return;
+  }
+
+  if (state.step === 2) {
+    card.innerHTML = `
+      <button class="back" id="back">← Back</button>
+      <div class="eyebrow">Step 2 of 6</div>
+      <h2 class="title">Choose your package</h2>
+      <p class="sub">Select the package you want to register for.</p>
+      <div class="packages">
+        ${Object.entries(packages).map(([key, p]) => `
+          <button class="package ${state.packageKey === key ? "selected" : ""}" data-p="${key}">
+            <span class="price">${p.price} ETB</span>
+            <strong>${p.name}</strong>
+            <span>Full package access</span>
+          </button>`).join("")}
+      </div>`;
+    return;
+  }
+
+  if (state.step === 3) {
+    if (state.packageKey === "aastu") {
+      card.innerHTML = `
+        <button class="back" id="back">← Back</button>
+        <div class="eyebrow">Step 3 of 6</div>
+        <h2 class="title">Choose your university</h2>
+        <p class="sub">Select the university for your AASTU / ASTU package.</p>
+        <div class="choice">
+          <button data-u="AASTU">AASTU</button>
+          <button data-u="ASTU">ASTU</button>
+        </div>`;
+    } else {
+      card.innerHTML = `
+        <button class="back" id="back">← Back</button>
+        <div class="eyebrow">Step 3 of 6</div>
+        <h2 class="title">Your university</h2>
+        <p class="sub">Enter the university you currently attend.</p>
+        <div class="field">
+          <label class="label" for="uni">University name</label>
+          <input class="input" id="uni" placeholder="e.g. Addis Ababa University" value="${escapeHtml(state.university)}">
         </div>
-
-        <button onclick="nextStep()">
-            Continue to Payment
-        </button>
-
-        `;
-
-        return;
+        <div id="err"></div>
+        <button class="btn" id="next">Continue</button>`;
     }
+    return;
+  }
 
+  if (state.step === 4) {
+    card.innerHTML = `
+      <button class="back" id="back">← Back</button>
+      <div class="eyebrow">Step 4 of 6</div>
+      <h2 class="title">Review your registration</h2>
+      <p class="sub">Please make sure your information is correct.</p>
+      <div class="summary">
+        <div class="row"><span>Name</span><strong>${escapeHtml(state.name)}</strong></div>
+        <div class="row"><span>Package</span><strong>${packages[state.packageKey].name}</strong></div>
+        <div class="row"><span>University</span><strong>${escapeHtml(state.university)}</strong></div>
+        <div class="row"><span>Amount</span><strong>${packages[state.packageKey].price} ETB</strong></div>
+      </div>
+      <button class="btn" id="next">Continue to payment</button>`;
+    return;
+  }
 
-    if (state.step === 5) {
+  if (state.step === 5) {
+    card.innerHTML = `
+      <button class="back" id="back">← Back</button>
+      <div class="eyebrow">Step 5 of 6</div>
+      <h2 class="title">Make your payment</h2>
+      <p class="sub">Pay ${packages[state.packageKey].price} ETB, then upload your payment screenshot below.</p>
+      <div class="payment">
+        <p><strong>Telebirr</strong><br>Yosef Tessema<br>0936163418</p>
+        <p><strong>CBE</strong><br>Yosef Tessema Wagari<br>1000343105049</p>
+      </div>
+      <div class="upload">
+        <label class="label" for="receipt">Payment screenshot</label>
+        <input type="file" id="receipt" accept="image/*">
+      </div>
+      <div id="err"></div>
+      <button class="btn" id="submit" ${state.submitting ? "disabled" : ""}>
+        ${state.submitting ? "Submitting..." : "Submit registration"}
+      </button>
+      <p class="small">Your registration will be reviewed by the Yorah Academy admin team.</p>`;
+    return;
+  }
 
-        app.innerHTML = `
-
-        <button class="back" onclick="goBack()">
-            ← Back
-        </button>
-
-        <div class="step">Step 5 of 6</div>
-
-        <h2>Make your payment</h2>
-
-        <p class="description">
-        Pay ${packages[state.package].price} ETB and upload your payment screenshot.
-        </p>
-
-
-        <div class="payment">
-
-            <strong>Telebirr</strong><br>
-
-            Yosef Tessema<br>
-
-            0936163418
-
-            <br><br>
-
-            <strong>CBE</strong><br>
-
-            Yosef Tessema Wagari<br>
-
-            1000343105049
-
-        </div>
-
-
-        <div class="upload">
-
-            <label>
-                Payment screenshot
-            </label>
-
-            <input
-                type="file"
-                id="paymentScreenshot"
-                accept="image/*"
-            >
-
-        </div>
-
-        <div id="error"></div>
-
-        <button onclick="submitRegistration()">
-            Submit Registration
-        </button>
-
-        <p class="small">
-        Your payment will be reviewed by the Yorah Academy admin team.
-        </p>
-
-        `;
-
-        return;
-    }
-
-
-    if (state.step === 6) {
-
-        app.innerHTML = `
-
-        <div class="success">
-
-            <div class="success-icon">
-                ⏳
-            </div>
-
-            <div class="step">
-                Registration Submitted
-            </div>
-
-            <h2>
-                Payment Under Review
-            </h2>
-
-            <p class="description">
-                Your registration and payment screenshot have been submitted.
-            </p>
-
-            <p class="small">
-                You will receive your private course channel access after the admin approves your payment.
-            </p>
-
-        </div>
-
-        `;
-
-    }
-
+  card.innerHTML = `
+    <div class="status">
+      <div class="check">⏳</div>
+      <div class="eyebrow">Registration submitted</div>
+      <h2 class="title">Payment under review</h2>
+      <p class="sub">Your registration details and screenshot have been sent to the admin team for review. Course access is provided after approval.</p>
+      <button class="btn" id="done">Back to start</button>
+    </div>`;
 }
 
+async function submitRegistration() {
+  const fileInput = document.getElementById("receipt");
+  const file = fileInput.files[0];
 
-function saveName() {
+  if (!file) {
+    showError("Please upload your payment screenshot.");
+    return;
+  }
 
-    const nameInput = document.getElementById("name");
+  if (!file.type.startsWith("image/")) {
+    showError("Please upload an image of your payment screenshot.");
+    return;
+  }
 
-    const name = nameInput.value.trim();
+  if (file.size > 10 * 1024 * 1024) {
+    showError("Your screenshot must be smaller than 10 MB.");
+    return;
+  }
 
-    if (!name) {
+  state.paymentFile = file;
+  state.submitting = true;
+  render();
 
-        document.getElementById("error").innerHTML =
-        '<div class="error">Please enter your full name.</div>';
+  const formData = new FormData();
+  formData.append("name", state.name);
+  formData.append("packageKey", state.packageKey);
+  formData.append("university", state.university);
+  formData.append("receipt", state.paymentFile, state.paymentFile.name);
 
-        return;
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: formData
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error("The server returned an unexpected response. Please try again.");
     }
 
-    state.name = name;
-
-    state.step = 2;
-
-    render();
-}
-
-
-function choosePackage(packageName) {
-
-    state.package = packageName;
-
-    state.step = 3;
-
-    render();
-}
-
-
-function saveUniversity() {
-
-    const universityInput =
-    document.getElementById("university");
-
-    const university =
-    universityInput.value.trim();
-
-    if (!university) {
-
-        document.getElementById("error").innerHTML =
-        '<div class="error">Please enter your university.</div>';
-
-        return;
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || "Submission failed. Please try again.");
     }
 
-    state.university = university;
-
-    state.step = 4;
-
-    render();
-}
-
-
-function chooseUniversity(university) {
-
-    state.university = university;
-
-    state.step = 4;
-
-    render();
-}
-
-
-function nextStep() {
-
-    state.step++;
-
-    render();
-}
-
-
-function goBack() {
-
-    state.step--;
-
-    if (state.step < 1) {
-        state.step = 1;
-    }
-
-    render();
-}
-
-
-function submitRegistration() {
-
-    const file =
-    document.getElementById("paymentScreenshot").files[0];
-
-    if (!file) {
-
-        document.getElementById("error").innerHTML =
-        '<div class="error">Please upload your payment screenshot.</div>';
-
-        return;
-    }
-
-    /*
-       We will connect this part to your
-       Telegram bot/backend later.
-    */
-
+    state.submitting = false;
     state.step = 6;
-
     render();
+
+  } catch (error) {
+    state.submitting = false;
+    render();
+
+    if (error instanceof TypeError) {
+      showError("Could not connect to the server. Please wait a minute and try again.");
+    } else {
+      showError(error.message || "Something went wrong. Please try again.");
+    }
+  }
 }
 
+card.addEventListener("click", async event => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  if (button.id === "next") {
+    if (state.step === 1) {
+      state.name = document.getElementById("name").value.trim();
+
+      if (!state.name) {
+        showError("Please enter your full name.");
+        return;
+      }
+
+      state.step = 2;
+
+    } else if (state.step === 3) {
+      state.university = document.getElementById("uni").value.trim();
+
+      if (!state.university) {
+        showError("Please enter your university.");
+        return;
+      }
+
+      state.step = 4;
+    } else {
+      state.step++;
+    }
+
+    render();
+    return;
+  }
+
+  if (button.id === "back") {
+    if (state.submitting) return;
+    state.step = Math.max(1, state.step - 1);
+    render();
+    return;
+  }
+
+  if (button.dataset.p) {
+    state.packageKey = button.dataset.p;
+    state.university = "";
+    state.step = 3;
+    render();
+    return;
+  }
+
+  if (button.dataset.u) {
+    state.university = button.dataset.u;
+    state.step = 4;
+    render();
+    return;
+  }
+
+  if (button.id === "submit") {
+    await submitRegistration();
+    return;
+  }
+
+  if (button.id === "done") {
+    state.step = 1;
+    state.name = "";
+    state.packageKey = "";
+    state.university = "";
+    state.paymentFile = null;
+    state.submitting = false;
+    render();
+  }
+});
 
 render();
-
 </script>
-
 </body>
 </html>
